@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CookMind — AI Recipe & Meal Planner</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    const app = initializeApp(firebaseConfig);
+    window.auth = getAuth(app);
+    window.db = getFirestore(app);
+    window.provider = new GoogleAuthProvider();
+    window.signInWithPopup = signInWithPopup;
+    window.signOut = signOut;
+    window.onAuthStateChanged = onAuthStateChanged;
+    window.doc = doc;
+    window.setDoc = setDoc;
+    window.onSnapshot = onSnapshot;
+    
+    // Load main app after Firebase is ready
+    import('./app.js');
+  </script>
+  <script src="google-cloud.js"></script>
+</head>
+<body>
+  <div id="toast" class="toast" role="alert"></div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo"><span class="logo-icon">🍳</span><span class="logo-text">CookMind</span></div>
+      <nav class="nav">
+        <button class="nav-btn active" data-section="search">Discover</button>
+        <button class="nav-btn" data-section="planner">Planner</button>
+        <button class="nav-btn" data-section="grocery">Grocery</button>
+        <button class="nav-btn" data-section="favorites">Favorites</button>
+      </nav>
+      <div class="user-area">
+        <div id="userInfo" class="user-info hidden">
+          <img id="userAvatar" class="user-avatar" alt="Avatar">
+          <span id="userName"></span>
+          <button id="signOutBtn" class="btn btn-sm">Sign Out</button>
+        </div>
+        <button id="signInBtn" class="btn btn-primary btn-sm">Sign in with Google</button>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">☀️</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Discover Section -->
+    <section id="section-search" class="app-section active">
+      <div class="section-hero">
+        <h1 class="hero-title">What's in your kitchen?</h1>
+        <p class="hero-sub">Add ingredients, get real recipes – AI powered</p>
+      </div>
+      <div class="card ingredient-card">
+        <div class="ingredient-input-row">
+          <input type="text" id="ingredientInput" class="text-input" placeholder="e.g. chicken, garlic, lemon…" autocomplete="off" />
+          <button id="addIngredientBtn" class="btn btn-accent">Add</button>
+        </div>
+        <div id="ingredientError" class="error-msg" hidden></div>
+        <div id="ingredientTags" class="tag-list"></div>
+        <div class="action-row">
+          <button id="searchRecipesBtn" class="btn btn-primary">🔍 Find Recipes</button>
+          <button id="aiRecommendBtn" class="btn btn-secondary">✨ AI Suggest</button>
+          <button id="clearIngredientsBtn" class="btn btn-ghost">Clear</button>
+        </div>
+      </div>
+      <div id="aiPanel" class="card ai-panel" hidden>
+        <h2 class="panel-title">✨ AI Recommendations</h2>
+        <div id="aiContent" class="ai-content"></div>
+      </div>
+      <div id="recipeResults" class="recipe-grid"></div>
+    </section>
+
+    <!-- Planner Section -->
+    <section id="section-planner" class="app-section" hidden>
+      <div class="section-hero">
+        <h1 class="hero-title">Weekly Meal Planner</h1>
+        <p class="hero-sub">Plan your week, auto‑generate grocery list</p>
+      </div>
+      <div class="planner-controls card">
+        <input type="text" id="mealInput" class="text-input" placeholder="Meal name…" />
+        <select id="mealDay" class="select-input"><option value="">Day</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option></select>
+        <select id="mealSlot" class="select-input"><option value="">Slot</option><option>Breakfast</option><option>Lunch</option><option>Dinner</option></select>
+        <button id="addMealBtn" class="btn btn-primary">+ Add Meal</button>
+      </div>
+      <div id="mealError" class="error-msg" hidden></div>
+      <div id="plannerGrid" class="planner-grid"></div>
+      <div class="action-row" style="margin-top:1.5rem">
+        <button id="clearPlannerBtn" class="btn btn-ghost">Clear Planner</button>
+        <button id="plannerToGroceryBtn" class="btn btn-secondary">🛒 Generate Grocery List</button>
+      </div>
+    </section>
+
+    <!-- Grocery Section -->
+    <section id="section-grocery" class="app-section" hidden>
+      <div class="section-hero">
+        <h1 class="hero-title">Smart Grocery List</h1>
+        <p class="hero-sub">Synced across devices, auto from planner</p>
+      </div>
+      <div class="card grocery-add">
+        <input type="text" id="groceryInput" class="text-input" placeholder="Add item…" />
+        <select id="groceryCategory" class="select-input"><option>Produce 🥦</option><option>Protein 🥩</option><option>Dairy 🧀</option><option>Bakery 🍞</option><option>Pantry 🥫</option><option>Other</option></select>
+        <button id="addGroceryBtn" class="btn btn-primary">+ Add</button>
+      </div>
+      <div id="groceryError" class="error-msg" hidden></div>
+      <div id="groceryList" class="grocery-list"></div>
+      <div class="action-row" style="margin-top:1.5rem">
+        <button id="clearGroceryBtn" class="btn btn-ghost">Clear List</button>
+        <button id="exportGroceryBtn" class="btn btn-secondary">📋 Copy to Clipboard</button>
+      </div>
+    </section>
+
+    <!-- Favorites Section -->
+    <section id="section-favorites" class="app-section" hidden>
+      <div class="section-hero">
+        <h1 class="hero-title">Saved Recipes</h1>
+        <p class="hero-sub">Your personal cookbook, always with you</p>
+      </div>
+      <div id="favoritesList" class="recipe-grid"></div>
+      <p id="favEmpty" class="empty-state" hidden>No saved recipes yet – hit ❤️ on any recipe!</p>
+    </section>
+  </main>
+
+  <!-- MODAL – HIDDEN BY DEFAULT (no white rectangle) -->
+  <div id="recipeModal" class="modal-overlay" style="display: none;" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer"><p>© 2026 CookMind · Firebase + Gemini AI · Hack2Skill</p></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

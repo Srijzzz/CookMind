@@ -1,0 +1,68 @@
+[
+  {
+    "id": "fb1",
+    "emoji": "🍗",
+    "title": "Lemon Garlic Chicken",
+    "time": "30 min",
+    "servings": 4,
+    "difficulty": "Easy",
+    "tags": ["chicken", "garlic", "lemon"],
+    "ingredients": ["500g chicken breast", "4 cloves garlic", "1 lemon (juice & zest)", "2 tbsp olive oil", "Salt & pepper", "Fresh parsley"],
+    "steps": ["Mince garlic, mix with lemon juice, zest, oil.", "Marinate chicken 15 min.", "Sear chicken in hot pan 6-7 min each side.", "Rest 5 min, garnish with parsley."]
+  },
+  {
+    "id": "fb2",
+    "emoji": "🍝",
+    "title": "Tomato Basil Pasta",
+    "time": "20 min",
+    "servings": 2,
+    "difficulty": "Easy",
+    "tags": ["pasta", "tomato", "basil", "garlic"],
+    "ingredients": ["200g spaghetti", "400g canned tomatoes", "3 garlic cloves", "Handful fresh basil", "3 tbsp olive oil", "Parmesan to serve"],
+    "steps": ["Boil pasta al dente.", "Sauté garlic in oil.", "Add tomatoes, simmer 10 min.", "Toss pasta in sauce, top with basil and parmesan."]
+  },
+  {
+    "id": "fb3",
+    "emoji": "🥗",
+    "title": "Chickpea & Spinach Bowl",
+    "time": "15 min",
+    "servings": 2,
+    "difficulty": "Easy",
+    "tags": ["chickpea", "spinach", "healthy"],
+    "ingredients": ["1 can chickpeas", "2 cups spinach", "1 tsp cumin", "1 tsp paprika", "2 tbsp olive oil", "Lemon juice"],
+    "steps": ["Drain chickpeas.", "Sauté with spices 5 min.", "Add spinach, wilt 2 min.", "Finish with lemon juice."]
+  },
+  {
+    "id": "fb4",
+    "emoji": "🍲",
+    "title": "Red Lentil Soup",
+    "time": "35 min",
+    "servings": 4,
+    "difficulty": "Easy",
+    "tags": ["lentil", "onion", "tomato", "cumin"],
+    "ingredients": ["1 cup red lentils", "1 onion", "2 tomatoes", "1 tsp cumin", "1 tsp turmeric", "4 cups vegetable broth"],
+    "steps": ["Sauté onion.", "Add tomatoes and spices, cook 3 min.", "Add lentils and broth, boil.", "Simmer 20 min, blend if desired."]
+  },
+  {
+    "id": "fb5",
+    "emoji": "🥘",
+    "title": "Vegetable Stir-Fry",
+    "time": "15 min",
+    "servings": 2,
+    "difficulty": "Easy",
+    "tags": ["carrot", "broccoli", "soy sauce", "ginger"],
+    "ingredients": ["1 carrot", "1 cup broccoli", "1 bell pepper", "2 tbsp soy sauce", "1 tsp sesame oil", "1 tsp ginger"],
+    "steps": ["Heat wok with oil.", "Stir-fry vegetables (carrot first).", "Cook 5-6 min.", "Add soy sauce, oil, ginger. Toss and serve."]
+  },
+  {
+    "id": "fb6",
+    "emoji": "🍳",
+    "title": "Spanish Omelette",
+    "time": "25 min",
+    "servings": 3,
+    "difficulty": "Medium",
+    "tags": ["egg", "potato", "onion"],
+    "ingredients": ["4 eggs", "2 potatoes", "1 onion", "3 tbsp olive oil", "Salt & pepper"],
+    "steps": ["Slice potatoes and onion.", "Cook in oil on low heat until soft (~15 min).", "Beat eggs, pour over potatoes.", "Cook until edges set, flip carefully, cook 2 min more."]
+  }
+]
